@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DietMaker - Indian Food Nutrition Calculator & Diet Tracker</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- App Header (ilovepdf.com inspired: Clean white header with red accent) -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <a href="#" class="logo-link">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#E5322C"/>
+          </svg>
+          <span class="logo-text">Diet<span class="logo-highlight">Maker</span></span>
+        </a>
+      </div>
+
+      <!-- Centered Header Search -->
+      <div class="header-search-area">
+        <div class="search-box-wrapper header-search">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="food-search-input" placeholder="Search Indian foods (e.g. Oats, Rice, Roti, Egg, Banana)..." autocomplete="off">
+          <button id="clear-search-btn" class="clear-search-btn hidden">&times;</button>
+        </div>
+      </div>
+
+      <nav class="header-nav">
+        <button id="btn-custom-food-trigger" class="btn btn-secondary-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Add Custom Food
+        </button>
+        <a href="#my-plate-section" class="mobile-plate-indicator" id="mobile-plate-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+          <span id="mobile-plate-badge" class="badge">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Sub-Header Bar (Categories) -->
+  <div class="sub-header">
+    <div class="sub-header-container">
+      <div class="category-pills-container">
+        <button class="category-pill active" data-category="all">All Foods</button>
+        <button class="category-pill" data-category="grains">Grains & Cereals</button>
+        <button class="category-pill" data-category="dals">Dals & Legumes</button>
+        <button class="category-pill" data-category="fruitsveg">Fruits & Veggies</button>
+        <button class="category-pill" data-category="dairyeggs">Dairy & Eggs</button>
+        <button class="category-pill" data-category="meatfish">Chicken & Fish</button>
+        <button class="category-pill" data-category="nutsseeds">Nuts & Seeds</button>
+        <button class="category-pill" data-category="custom">My Custom Foods</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="app-main">
+    <div class="main-grid">
+      
+      <!-- Left Column: Search, Filter, and Food Card Grid -->
+      <section class="food-explorer-section" id="food-explorer-section">
+
+        <!-- Food Cards Grid -->
+        <div class="food-grid-header">
+          <h2 class="section-title">Select Food Items <span id="results-count" class="results-count">(Loading...)</span></h2>
+          <span class="info-label">*Values are per 100g base</span>
+        </div>
+        
+        <div id="food-cards-grid" class="food-cards-grid">
+          <!-- Food cards will be dynamically loaded here by JS -->
+          <div class="loading-spinner">Loading food items...</div>
+        </div>
+      </section>
+
+      <!-- Right Column: Manual Calculator & My Plate Dashboard -->
+      <section class="calculator-sidebar-section" id="my-plate-section">
+        
+
+
+        <!-- Part B: My Plate (Selected List & Summary) -->
+        <div class="card plate-card">
+          <div class="plate-header">
+            <h3 class="plate-title">
+              <i class="fa-solid fa-plate-wheat plate-icon"></i>
+              My Plate / Diet Plan
+            </h3>
+            <button id="btn-clear-plate" class="clear-plate-btn hidden">Clear Plate</button>
+          </div>
+
+          <!-- Totals Panel (Now at the top) -->
+          <div id="plate-totals-panel" class="plate-totals-panel hidden">
+            <div class="totals-headline">
+              <span class="totals-title">Plate Total Nutrition</span>
+            </div>
+
+            <!-- Premium Nutrition Wheel Chart -->
+            <div class="macro-chart-container">
+              <div class="donut-chart-wrapper">
+                <svg width="115" height="115" viewBox="0 0 36 36" class="donut-svg">
+                  <circle class="donut-ring" cx="18" cy="18" r="15.915" fill="transparent" stroke="#f1f5f9" stroke-width="4"></circle>
+                  <circle id="donut-segment-protein" cx="18" cy="18" r="15.915" fill="transparent" stroke="var(--success)" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                  <circle id="donut-segment-carbs" cx="18" cy="18" r="15.915" fill="transparent" stroke="var(--warning)" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                  <circle id="donut-segment-fat" cx="18" cy="18" r="15.915" fill="transparent" stroke="var(--primary)" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="donut-center-text">
+                  <span class="center-cal-val" id="donut-center-calories">0</span>
+                  <span class="center-cal-lbl">kcal</span>
+                </div>
+              </div>
+              
+              <div class="donut-legend">
+                <div class="legend-item">
+                  <div class="legend-left">
+                    <span class="legend-color p-protein"></span>
+                    <span class="legend-name">Protein</span>
+                  </div>
+                  <div class="legend-right">
+                    <span id="total-val-protein">0</span>g<span class="legend-pct">(<span id="donut-pct-protein">0</span>%)</span>
+                  </div>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-left">
+                    <span class="legend-color p-carbs"></span>
+                    <span class="legend-name">Carbs</span>
+                  </div>
+                  <div class="legend-right">
+                    <span id="total-val-carbs">0</span>g<span class="legend-pct">(<span id="donut-pct-carbs">0</span>%)</span>
+                  </div>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-left">
+                    <span class="legend-color p-fat"></span>
+                    <span class="legend-name">Fat</span>
+                  </div>
+                  <div class="legend-right">
+                    <span id="total-val-fat">0</span>g<span class="legend-pct">(<span id="donut-pct-fat">0</span>%)</span>
+                  </div>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-left">
+                    <span class="legend-color p-fiber"></span>
+                    <span class="legend-name">Fiber</span>
+                  </div>
+                  <div class="legend-right">
+                    <span id="total-val-fiber">0</span>g
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Items List (Now below the totals) -->
+          <div class="plate-items-list" id="plate-items-list">
+            <!-- Dynamically populated plate items -->
+            <div class="plate-empty-state">
+              <p>Your plate is empty. Add items to calculate total nutrition details.</p>
+            </div>
+          </div>
+
+          <!-- Print/Export Actions -->
+          <div class="plate-action-buttons">
+            <button class="btn btn-primary btn-block btn-download" id="btn-export-pdf">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Download Plate Report (PDF)
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal: Custom Food Creator (ilovepdf style clean popup) -->
+  <div class="modal-overlay hidden" id="custom-food-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Create Custom Food Item</h3>
+        <button class="modal-close-btn" id="btn-modal-close">&times;</button>
+      </div>
+      <form id="custom-food-form" class="modal-form">
+        <div class="form-row-2">
+          <div class="form-group" style="grid-column: span 2;">
+            <label for="food-name">Food Name *</label>
+            <input type="text" id="food-name" placeholder="e.g. Boiled Egg White" required>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="food-category">Category *</label>
+            <select id="food-category" required>
+              <option value="grains" selected>Grains & Cereals</option>
+              <option value="dals">Dals & Legumes</option>
+              <option value="fruitsveg">Fruits & Veggies</option>
+              <option value="dairyeggs">Dairy & Eggs</option>
+              <option value="meatfish">Chicken & Fish</option>
+              <option value="nutsseeds">Nuts & Seeds</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="food-serving">Typical serving estimate</label>
+            <input type="text" id="food-serving" placeholder="e.g. 1 egg is ~50g">
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label for="food-unit-name">Unit Name (Optional)</label>
+            <input type="text" id="food-unit-name" placeholder="e.g. egg, slice, roti">
+          </div>
+          <div class="form-group">
+            <label for="food-unit-weight">Unit Weight (g)</label>
+            <input type="number" id="food-unit-weight" min="1" placeholder="e.g. 50">
+          </div>
+          <div class="form-group">
+            <label for="food-icon">Icon Class (Optional)</label>
+            <input type="text" id="food-icon" placeholder="e.g. fa-apple-whole">
+          </div>
+        </div>
+
+        <div class="nutrition-input-header">Nutritional Values (Per 100 grams)</div>
+        
+        <div class="form-row-3">
+          <div class="form-group">
+            <label for="food-calories">Calories (kcal) *</label>
+            <input type="number" id="food-calories" min="0" step="0.1" placeholder="0" required>
+          </div>
+          <div class="form-group">
+            <label for="food-protein">Protein (g) *</label>
+            <input type="number" id="food-protein" min="0" step="0.1" placeholder="0" required>
+          </div>
+          <div class="form-group">
+            <label for="food-carbs">Carbs (g) *</label>
+            <input type="number" id="food-carbs" min="0" step="0.1" placeholder="0" required>
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label for="food-fat">Fat (g) *</label>
+            <input type="number" id="food-fat" min="0" step="0.1" placeholder="0" required>
+          </div>
+          <div class="form-group">
+            <label for="food-fiber">Dietary Fiber (g)</label>
+            <input type="number" id="food-fiber" min="0" step="0.1" placeholder="0" value="0">
+          </div>
+          <div class="form-group">
+            <label for="food-sodium">Sodium (mg)</label>
+            <input type="number" id="food-sodium" min="0" step="1" placeholder="0" value="0">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary-outline" id="btn-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Food Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Popover: Select Weight/Quantity before adding to plate -->
+  <div class="selector-popover hidden" id="weight-selector-popover">
+    <div class="popover-header">
+      <div class="popover-header-info">
+        <div class="popover-icon-container" id="select-modal-icon-wrapper">
+          <i class="fa-solid fa-utensils"></i>
+        </div>
+        <div class="popover-details">
+          <h4 id="select-modal-food-name">Food Name</h4>
+          <p id="select-modal-category">Category</p>
+        </div>
+      </div>
+      <button class="popover-close-btn" id="btn-select-modal-close">&times;</button>
+    </div>
+
+    <div class="popover-body">
+      <!-- Unit Switcher -->
+      <div class="unit-switcher-row hidden" id="select-unit-switcher-container">
+        <button class="unit-switch-btn active" id="select-switch-weight-mode">By Weight (g)</button>
+        <button class="unit-switch-btn" id="select-switch-qty-mode">By Pieces</button>
+      </div>
+
+      <!-- Input Block -->
+      <div class="calculator-input-block select-input-block">
+        <!-- Weight Input Mode -->
+        <div id="select-weight-mode-block">
+          <label for="select-gram-input" class="input-label">Enter Weight manually</label>
+          <div class="gram-input-row">
+            <button class="adjust-btn btn-minus" id="btn-select-calc-minus">-</button>
+            <div class="input-unit-wrapper">
+              <input type="number" id="select-gram-input" value="100" min="1" max="5000">
+              <span class="unit-tag">grams</span>
+            </div>
+            <button class="adjust-btn btn-plus" id="btn-select-calc-plus">+</button>
+          </div>
+          
+          <!-- Quick Weights Presets -->
+          <div class="preset-buttons" id="select-weight-presets-container"></div>
+          
+          <!-- Slider -->
+          <input type="range" id="select-gram-slider" class="gram-slider" min="1" max="500" value="100">
+        </div>
+
+        <!-- Quantity Mode -->
+        <div id="select-qty-mode-block" class="hidden">
+          <label for="select-qty-input" class="input-label" id="select-qty-input-label">Enter Quantity</label>
+          <div class="gram-input-row">
+            <button class="adjust-btn btn-minus" id="btn-select-qty-minus">-</button>
+            <div class="input-unit-wrapper">
+              <input type="number" id="select-qty-input" value="1" min="0.25" max="100" step="0.25">
+              <span class="unit-tag" id="select-qty-unit-tag">pcs</span>
+            </div>
+            <button class="adjust-btn btn-plus" id="btn-select-qty-plus">+</button>
+          </div>
+          
+          <!-- Quick Quantity Presets -->
+          <div class="preset-buttons" id="select-qty-presets-container">
+            <button class="btn btn-preset btn-qty-preset" data-qty="1">1 pc</button>
+            <button class="btn btn-preset btn-qty-preset active" data-qty="2">2 pcs</button>
+            <button class="btn btn-preset btn-qty-preset" data-qty="3">3 pcs</button>
+            <button class="btn btn-preset btn-qty-preset" data-qty="4">4 pcs</button>
+            <button class="btn btn-preset btn-qty-preset" data-qty="6">6 pcs</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Action Buttons -->
+      <div class="select-modal-actions">
+        <button class="btn btn-secondary-outline btn-block" id="btn-select-modal-cancel">Cancel</button>
+        <button class="btn btn-primary btn-block" id="btn-select-modal-confirm">Add to Plate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Bottom Navigation Bar (Visible on Mobile) -->
+  <div class="bottom-nav">
+    <button class="nav-tab active" id="tab-explore">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Explore</span>
+    </button>
+    <button class="nav-tab" id="tab-plate">
+      <i class="fa-solid fa-plate-wheat"></i>
+      <span>My Plate</span>
+      <span id="mobile-plate-badge-tab" class="tab-badge">0</span>
+    </button>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p>&copy; 2026 DietMaker. Clean, minimalist, and authentic food tools. Inspired by flat-tool design language.</p>
+    </div>
+  </footer>
+
+  <!-- Script references -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
