@@ -475,7 +475,34 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: #0f172a;
   line-height: 1.25;
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+.food-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.category-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.category-dot.cat-grains { background-color: #f59e0b; }
+.category-dot.cat-dals { background-color: #ea580c; }
+.category-dot.cat-fruitsveg { background-color: #16a34a; }
+.category-dot.cat-dairyeggs { background-color: #0284c7; }
+.category-dot.cat-meatfish { background-color: #dc2626; }
+.category-dot.cat-nutsseeds { background-color: #7c3aed; }
+.category-dot.cat-custom { background-color: #4b5563; }
 
 /* Minimal Macro info list below title */
 .food-card-macros-minimal {

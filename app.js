@@ -111,6 +111,64 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const switchToExploreTab = () => {
+    if (tabExplore && tabPlate) {
+      tabExplore.classList.add("active");
+      tabPlate.classList.remove("active");
+      if (foodExplorerSection) foodExplorerSection.classList.remove("hidden-tab");
+      if (myPlateSection) myPlateSection.classList.add("hidden-tab");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  function getFoodIcon(food) {
+    if (food.icon) return food.icon;
+    const name = food.name.toLowerCase();
+    
+    // Check keywords for specific foods
+    if (name.includes("oats") || name.includes("muesli") || name.includes("corn flakes")) return "fa-solid fa-bowl-rice";
+    if (name.includes("rice") || name.includes("chawal")) return "fa-solid fa-bowl-food";
+    if (name.includes("roti") || name.includes("chapati") || name.includes("bread") || name.includes("dosa") || name.includes("idli") || name.includes("chilla")) return "fa-solid fa-wheat-awn";
+    if (name.includes("flour") || name.includes("atta") || name.includes("besan") || name.includes("sattu") || name.includes("suji") || name.includes("rava")) return "fa-solid fa-seedling";
+    if (name.includes("quinoa") || name.includes("daliya")) return "fa-solid fa-bowl-rice";
+    
+    if (name.includes("dal") || name.includes("chana") || name.includes("rajma") || name.includes("soy") || name.includes("lentil")) return "fa-solid fa-seedling";
+    
+    if (name.includes("banana")) return "fa-solid fa-lemon";
+    if (name.includes("apple")) return "fa-solid fa-apple-whole";
+    if (name.includes("mango") || name.includes("orange") || name.includes("guava") || name.includes("papaya") || name.includes("watermelon") || name.includes("pomegranate")) return "fa-solid fa-apple-whole";
+    if (name.includes("broccoli") || name.includes("spinach") || name.includes("cauliflower")) return "fa-solid fa-tree";
+    if (name.includes("potato") || name.includes("onion") || name.includes("ginger") || name.includes("garlic") || name.includes("mushroom") || name.includes("cucumber") || name.includes("tomato")) return "fa-solid fa-carrot";
+    if (name.includes("avocado")) return "fa-solid fa-pepper-hot";
+    
+    if (name.includes("milk")) return "fa-solid fa-glass-water";
+    if (name.includes("paneer") || name.includes("tofu") || name.includes("cheese")) return "fa-solid fa-cubes";
+    if (name.includes("curd") || name.includes("dahi") || name.includes("yogurt")) return "fa-solid fa-spoon";
+    if (name.includes("egg")) return "fa-solid fa-egg";
+    if (name.includes("butter") || name.includes("ghee")) return "fa-solid fa-mortar-pestle";
+    if (name.includes("whey") || name.includes("protein")) return "fa-solid fa-prescription-bottle-medical";
+    
+    if (name.includes("chicken")) return "fa-solid fa-drumstick-bite";
+    if (name.includes("fish") || name.includes("tuna") || name.includes("salmon") || name.includes("basa")) return "fa-solid fa-fish";
+    if (name.includes("mutton") || name.includes("meat") || name.includes("goat")) return "fa-solid fa-meat";
+    if (name.includes("prawn") || name.includes("shrimp")) return "fa-solid fa-shrimp";
+    
+    if (name.includes("peanut") || name.includes("almond") || name.includes("walnut") || name.includes("cashew") || name.includes("pista") || name.includes("nut") || name.includes("makhana")) return "fa-solid fa-brain";
+    if (name.includes("seed")) return "fa-solid fa-seedling";
+    if (name.includes("oil")) return "fa-solid fa-bottle-droplet";
+    if (name.includes("honey")) return "fa-solid fa-jar";
+
+    // Fallbacks by category
+    if (food.category === "grains") return "fa-solid fa-bowl-rice";
+    if (food.category === "dals") return "fa-solid fa-seedling";
+    if (food.category === "fruitsveg") return "fa-solid fa-apple-whole";
+    if (food.category === "dairyeggs") return "fa-solid fa-egg";
+    if (food.category === "meatfish") return "fa-solid fa-drumstick-bite";
+    if (food.category === "nutsseeds") return "fa-solid fa-brain";
+    
+    return "fa-solid fa-utensils";
+  }
+
   // --- Initializer Function ---
   function init() {
     loadCustomFoods();
@@ -212,13 +270,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     filtered.forEach(food => {
       const card = document.createElement("div");
-      card.className = `food-card ${selectedFood && selectedFood.id === food.id ? "selected" : ""}`;
+      card.className = `food-card cat-${food.category} ${selectedFood && selectedFood.id === food.id ? "selected" : ""}`;
       card.dataset.id = food.id;
+
+      const iconClass = getFoodIcon(food);
 
       card.innerHTML = `
         <div class="food-card-flex-wrapper">
           <div class="food-card-icon-container cat-${food.category}">
-            <i class="${food.icon || 'fa-solid fa-utensils'}"></i>
+            <i class="${iconClass}"></i>
           </div>
           <div class="food-card-minimal-body">
             <h4 class="food-card-title">${food.name}</h4>
@@ -290,8 +350,9 @@ document.addEventListener("DOMContentLoaded", () => {
     selectCategory.textContent = food.categoryLabel;
     
     // Set icon
+    const iconClass = getFoodIcon(food);
     selectIconWrapper.className = `select-modal-icon-container cat-${food.category}`;
-    selectIconWrapper.innerHTML = `<i class="${food.icon || 'fa-solid fa-utensils'}"></i>`;
+    selectIconWrapper.innerHTML = `<i class="${iconClass}"></i>`;
 
     // Setup default weight based on category
     let defaultWeight = 100;
@@ -801,6 +862,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function setupEventListeners() {
     // Search input
     foodSearchInput.addEventListener("input", (e) => {
+      // Auto switch to explore tab if user starts typing while on plate tab
+      switchToExploreTab();
+
       searchQuery = e.target.value;
       if (searchQuery.trim() !== "") {
         clearSearchBtn.classList.remove("hidden");
@@ -808,6 +872,11 @@ document.addEventListener("DOMContentLoaded", () => {
         clearSearchBtn.classList.add("hidden");
       }
       renderFoodGrid();
+    });
+
+    foodSearchInput.addEventListener("focus", () => {
+      // Auto switch to explore tab when search bar is focused
+      switchToExploreTab();
     });
 
     // Clear search button
@@ -991,21 +1060,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Sticky Bottom Tab Switcher
     if (tabExplore && tabPlate) {
-      tabExplore.addEventListener("click", () => {
-        tabExplore.classList.add("active");
-        tabPlate.classList.remove("active");
-        if (foodExplorerSection) foodExplorerSection.classList.remove("hidden-tab");
-        if (myPlateSection) myPlateSection.classList.add("hidden-tab");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-
-      tabPlate.addEventListener("click", () => {
-        tabPlate.classList.add("active");
-        tabExplore.classList.remove("active");
-        if (myPlateSection) myPlateSection.classList.remove("hidden-tab");
-        if (foodExplorerSection) foodExplorerSection.classList.add("hidden-tab");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
+      tabExplore.addEventListener("click", switchToExploreTab);
+      tabPlate.addEventListener("click", switchToPlateTab);
     }
 
     // Toggle categories sub-header via hamburger menu on mobile
