@@ -90,6 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnDrawerClose = document.getElementById("btn-drawer-close");
   const drawerBackdrop = document.getElementById("drawer-backdrop");
 
+  // Editable Plate Title Elements
+  const plateTitleText = document.getElementById("plate-title-text");
+  const btnEditTitleTrigger = document.getElementById("btn-edit-title-trigger");
+
   // Drawer helper functions
   const openDrawer = () => {
     if (subHeader) subHeader.classList.add("open");
@@ -174,11 +178,19 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCustomFoods();
     combineDatabases();
     loadPlateFromStorage();
+    loadMealName();
     renderFoodGrid();
     updatePlateUI();
 
     // Event Listeners setup
     setupEventListeners();
+  }
+
+  function loadMealName() {
+    const savedName = localStorage.getItem("ahaarkosh_meal_name");
+    if (savedName && plateTitleText) {
+      plateTitleText.textContent = savedName;
+    }
   }
 
   // --- LocalStorage Helpers ---
@@ -1082,6 +1094,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (drawerBackdrop) {
       drawerBackdrop.addEventListener("click", closeDrawer);
+    }
+
+    // Editable meal title listeners
+    if (btnEditTitleTrigger && plateTitleText) {
+      btnEditTitleTrigger.addEventListener("click", () => {
+        plateTitleText.focus();
+        document.execCommand('selectAll', false, null);
+      });
+    }
+
+    if (plateTitleText) {
+      plateTitleText.addEventListener("blur", () => {
+        const name = plateTitleText.textContent.trim();
+        if (name === "") {
+          plateTitleText.textContent = "My Plate / Diet Plan";
+        } else {
+          localStorage.setItem("ahaarkosh_meal_name", name);
+        }
+      });
+
+      plateTitleText.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          plateTitleText.blur();
+        }
+      });
     }
 
     // Initialize tab state for mobile

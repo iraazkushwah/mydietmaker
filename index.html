@@ -44,7 +44,7 @@
       <nav class="header-nav">
         <button id="btn-custom-food-trigger" class="btn btn-secondary-outline">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          Add Custom Food
+          <span class="btn-text">Add Custom Food</span>
         </button>
         <a href="#my-plate-section" class="mobile-plate-indicator" id="mobile-plate-btn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
@@ -103,7 +103,8 @@
           <div class="plate-header">
             <h3 class="plate-title">
               <i class="fa-solid fa-plate-wheat plate-icon"></i>
-              My Plate / Diet Plan
+              <span id="plate-title-text" contenteditable="true" class="editable-title" title="Click to rename meal">My Plate / Diet Plan</span>
+              <i class="fa-solid fa-pen-to-square edit-title-icon" id="btn-edit-title-trigger" title="Rename meal"></i>
             </h3>
             <button id="btn-clear-plate" class="clear-plate-btn hidden">Clear Plate</button>
           </div>

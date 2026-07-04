@@ -780,6 +780,38 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 8px;
+  max-width: 80%;
+}
+
+.editable-title {
+  outline: none;
+  border-bottom: 1px dashed transparent;
+  transition: var(--transition);
+  padding: 1px 4px;
+  border-radius: var(--border-radius-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editable-title:hover, .editable-title:focus {
+  background-color: var(--bg-light);
+  border-bottom-color: var(--primary);
+  cursor: text;
+}
+
+.edit-title-icon {
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-left: 2px;
+  transition: var(--transition);
+  opacity: 0.6;
+}
+
+.edit-title-icon:hover {
+  color: var(--primary);
+  opacity: 1;
 }
 
 .plate-icon {
@@ -804,10 +836,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: 130px;
-  overflow-y: auto;
   margin-bottom: 12px;
-  padding-right: 4px;
 }
 
 .plate-empty-state {
@@ -1938,17 +1967,51 @@ h1, h2, h3, h4, h5, h6 {
     grid-template-rows: 52px 52px !important;
     align-items: center;
     padding: 0 16px;
+    position: relative;
   }
 
   .logo-area {
-    grid-column: 1;
+    grid-column: 1 / span 2;
     grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+  }
+
+  .hamburger-btn {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .header-nav {
-    grid-column: 2;
-    grid-row: 1;
-    justify-content: flex-end;
+    position: absolute;
+    right: 16px;
+    top: 8px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .app-header .btn-secondary-outline .btn-text {
+    display: none;
+  }
+
+  .app-header .btn-secondary-outline {
+    padding: 8px !important;
+    width: 36px;
+    height: 36px;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    gap: 0 !important;
   }
 
   .header-search-area {
