@@ -1418,7 +1418,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 16px;
   }
   .food-cards-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: 1fr;
     gap: 12px;
   }
   .food-card {
