@@ -144,6 +144,29 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
 }
 
+.hamburger-btn {
+  display: none; /* Hidden on desktop */
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--text-dark);
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -6px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition);
+}
+
+.hamburger-btn:hover {
+  background-color: var(--bg-light);
+}
+
+.hamburger-btn:active {
+  background-color: var(--border-color);
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
@@ -298,6 +321,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 20px;
   cursor: pointer;
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .category-pill:hover {
@@ -1562,19 +1586,41 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.01);
 }
 
+/* Sidebar Drawer style defaults (hidden on desktop) */
+.sub-header-drawer-header {
+  display: none;
+}
+
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(1.5px);
+  z-index: 1100;
+  transition: opacity 0.25s ease;
+}
+.drawer-backdrop.hidden {
+  display: none;
+}
+
 .sub-header-container {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0;
 }
 
 .sub-header-container .category-pills-container {
   display: flex;
+  flex-wrap: nowrap;
   gap: 8px;
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none; /* Hide scrollbar for Firefox */
-  padding-bottom: 2px;
+  padding: 0 24px 2px 24px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .sub-header-container .category-pills-container::-webkit-scrollbar {
@@ -1692,6 +1738,84 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 1024px) {
+  .hamburger-btn {
+    display: inline-flex;
+  }
+
+  .sub-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: -300px !important; /* Start off-screen */
+    width: 280px !important;
+    height: 100vh !important;
+    background-color: var(--bg-white) !important;
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15) !important;
+    z-index: 1200 !important;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 20px 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .sub-header.open {
+    left: 0 !important; /* Slide in */
+  }
+
+  .sub-header-drawer-header {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .sub-header-drawer-header h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .drawer-close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+    margin-right: -8px;
+  }
+
+  .drawer-close-btn:hover {
+    color: var(--primary);
+  }
+
+  .sub-header-container {
+    padding: 0 !important;
+    width: 100% !important;
+    height: calc(100% - 60px) !important;
+    overflow-y: auto !important;
+  }
+
+  .sub-header-container .category-pills-container {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    overflow-x: visible !important;
+    white-space: normal !important;
+    gap: 10px !important;
+    padding: 0 4px 40px 4px !important;
+  }
+
+  .category-pill {
+    width: 100% !important;
+    text-align: left !important;
+    padding: 10px 16px !important;
+    border-radius: var(--border-radius) !important;
+    font-size: 14px !important;
+  }
+
   .main-grid {
     grid-template-columns: 1fr !important;
     gap: 0 !important;
@@ -1764,6 +1888,10 @@ h1, h2, h3, h4, h5, h6 {
 
   .app-footer {
     margin-bottom: 56px; /* Shift footer up */
+  }
+
+  .sub-header-container .category-pills-container {
+    padding: 0 16px 2px 16px;
   }
 }
 

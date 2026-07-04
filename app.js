@@ -85,6 +85,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnModalCancel = document.getElementById("btn-modal-cancel");
   const customFoodForm = document.getElementById("custom-food-form");
 
+  // Hamburger Menu & Sub-header Elements
+  const btnHamburgerMenu = document.getElementById("btn-hamburger-menu");
+  const subHeader = document.querySelector(".sub-header");
+  const btnDrawerClose = document.getElementById("btn-drawer-close");
+  const drawerBackdrop = document.getElementById("drawer-backdrop");
+
+  // Drawer helper functions
+  const openDrawer = () => {
+    if (subHeader) subHeader.classList.add("open");
+    if (drawerBackdrop) drawerBackdrop.classList.remove("hidden");
+  };
+
+  const closeDrawer = () => {
+    if (subHeader) subHeader.classList.remove("open");
+    if (drawerBackdrop) drawerBackdrop.classList.add("hidden");
+  };
+
   // --- Initializer Function ---
   function init() {
     loadCustomFoods();
@@ -813,6 +830,11 @@ document.addEventListener("DOMContentLoaded", () => {
         e.target.classList.add("active");
         currentCategory = e.target.dataset.category;
         renderFoodGrid();
+
+        // Close sub-header drawer on mobile after selecting a category
+        if (window.innerWidth <= 1024) {
+          closeDrawer();
+        }
       });
     });
 
@@ -988,6 +1010,26 @@ document.addEventListener("DOMContentLoaded", () => {
         if (foodExplorerSection) foodExplorerSection.classList.add("hidden-tab");
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
+    }
+
+    // Toggle categories sub-header via hamburger menu on mobile
+    if (btnHamburgerMenu) {
+      btnHamburgerMenu.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (subHeader && subHeader.classList.contains("open")) {
+          closeDrawer();
+        } else {
+          openDrawer();
+        }
+      });
+    }
+
+    if (btnDrawerClose) {
+      btnDrawerClose.addEventListener("click", closeDrawer);
+    }
+
+    if (drawerBackdrop) {
+      drawerBackdrop.addEventListener("click", closeDrawer);
     }
 
     // Initialize tab state for mobile
