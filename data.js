@@ -61,7 +61,7 @@ const INDIAN_FOODS_DATABASE = [
     servingInfo: "1 medium roti is ~25g",
     unitName: "roti",
     unitWeight: 25,
-    icon: "fa-solid fa-cookie",
+    icon: "fa-solid fa-bread-slice",
     nutrition: {
       calories: 260,
       protein: 8.5,
@@ -131,7 +131,7 @@ const INDIAN_FOODS_DATABASE = [
     servingInfo: "1 medium banana is ~100g",
     unitName: "banana",
     unitWeight: 100,
-    icon: "fa-solid fa-apple-whole",
+    icon: "fa-solid fa-banana",
     nutrition: {
       calories: 89,
       protein: 1.1,
@@ -147,7 +147,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "fruitsveg",
     categoryLabel: "Fruits & Vegetables",
     servingInfo: "Fresh raw cut pieces",
-    icon: "fa-solid fa-apple-whole",
+    icon: "fa-solid fa-lemon",
     nutrition: {
       calories: 43,
       protein: 0.5,
@@ -183,7 +183,7 @@ const INDIAN_FOODS_DATABASE = [
     servingInfo: "1 medium mango is ~150g",
     unitName: "mango",
     unitWeight: 150,
-    icon: "fa-solid fa-apple-whole",
+    icon: "fa-solid fa-lemon",
     nutrition: {
       calories: 60,
       protein: 0.8,
@@ -201,7 +201,7 @@ const INDIAN_FOODS_DATABASE = [
     servingInfo: "1 medium potato is ~120g",
     unitName: "potato",
     unitWeight: 120,
-    icon: "fa-solid fa-carrot",
+    icon: "fa-solid fa-egg",
     nutrition: {
       calories: 77,
       protein: 2.0,
@@ -219,7 +219,7 @@ const INDIAN_FOODS_DATABASE = [
     servingInfo: "1 medium sweet potato is ~130g",
     unitName: "sweet potato",
     unitWeight: 130,
-    icon: "fa-solid fa-carrot",
+    icon: "fa-solid fa-pepper-hot",
     nutrition: {
       calories: 86,
       protein: 1.6,
@@ -235,7 +235,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "fruitsveg",
     categoryLabel: "Fruits & Vegetables",
     servingInfo: "Fresh raw green broccoli florets",
-    icon: "fa-solid fa-leaf",
+    icon: "fa-solid fa-tree",
     nutrition: {
       calories: 34,
       protein: 2.8,
@@ -269,7 +269,7 @@ const INDIAN_FOODS_DATABASE = [
     servingInfo: "1 medium cucumber is ~150g",
     unitName: "cucumber",
     unitWeight: 150,
-    icon: "fa-solid fa-carrot",
+    icon: "fa-solid fa-pepper-hot",
     nutrition: {
       calories: 15,
       protein: 0.6,
@@ -305,7 +305,7 @@ const INDIAN_FOODS_DATABASE = [
     servingInfo: "1 medium onion is ~80g",
     unitName: "onion",
     unitWeight: 80,
-    icon: "fa-solid fa-carrot",
+    icon: "fa-solid fa-circle",
     nutrition: {
       calories: 40,
       protein: 1.1,
@@ -371,7 +371,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "dals",
     categoryLabel: "Dals & Legumes",
     servingInfo: "Dry raw black chickpeas",
-    icon: "fa-solid fa-seedling",
+    icon: "fa-solid fa-circle-dot",
     nutrition: {
       calories: 360,
       protein: 20.0,
@@ -387,7 +387,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "dals",
     categoryLabel: "Dals & Legumes",
     servingInfo: "Dry raw white chickpeas",
-    icon: "fa-solid fa-seedling",
+    icon: "fa-solid fa-circle-dot",
     nutrition: {
       calories: 364,
       protein: 19.0,
@@ -403,7 +403,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "dals",
     categoryLabel: "Dals & Legumes",
     servingInfo: "Raw high-protein soya chunks",
-    icon: "fa-solid fa-seedling",
+    icon: "fa-solid fa-cubes",
     nutrition: {
       calories: 345,
       protein: 52.0,
@@ -453,7 +453,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "dairyeggs",
     categoryLabel: "Dairy & Eggs",
     servingInfo: "Whole fresh cow milk, 1 glass ~250ml",
-    icon: "fa-solid fa-glass-water",
+    icon: "fa-solid fa-bottle-water",
     nutrition: {
       calories: 62,
       protein: 3.2,
@@ -469,7 +469,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "dairyeggs",
     categoryLabel: "Dairy & Eggs",
     servingInfo: "Low fat milk, 1 glass ~250ml",
-    icon: "fa-solid fa-glass-water",
+    icon: "fa-solid fa-bottle-water",
     nutrition: {
       calories: 47,
       protein: 3.2,
@@ -589,7 +589,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "nutsseeds",
     categoryLabel: "Nuts & Seeds",
     servingInfo: "Plain dry raw almonds",
-    icon: "fa-solid fa-circle-dot",
+    icon: "fa-solid fa-seedling",
     nutrition: {
       calories: 579,
       protein: 21.0,
@@ -605,7 +605,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "nutsseeds",
     categoryLabel: "Nuts & Seeds",
     servingInfo: "Plain dry raw walnuts",
-    icon: "fa-solid fa-circle-dot",
+    icon: "fa-solid fa-brain",
     nutrition: {
       calories: 654,
       protein: 15.0,
@@ -669,7 +669,7 @@ const INDIAN_FOODS_DATABASE = [
     category: "nutsseeds",
     categoryLabel: "Nuts & Seeds",
     servingInfo: "Shelled raw sunflower seeds",
-    icon: "fa-solid fa-seedling",
+    icon: "fa-solid fa-sun",
     nutrition: {
       calories: 584,
       protein: 20.8,

@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const clearSearchBtn = document.getElementById("clear-search-btn");
   const categoryPills = document.querySelectorAll(".category-pill");
   const foodCardsGrid = document.getElementById("food-cards-grid");
-  const resultsCount = document.getElementById("results-count");
 
   // Selector Modal Elements
   const selectModal = document.getElementById("weight-selector-popover");
@@ -102,6 +101,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (drawerBackdrop) drawerBackdrop.classList.add("hidden");
   };
 
+  const switchToPlateTab = () => {
+    if (tabExplore && tabPlate) {
+      tabPlate.classList.add("active");
+      tabExplore.classList.remove("active");
+      if (myPlateSection) myPlateSection.classList.remove("hidden-tab");
+      if (foodExplorerSection) foodExplorerSection.classList.add("hidden-tab");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   // --- Initializer Function ---
   function init() {
     loadCustomFoods();
@@ -154,23 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Notification Toast Helper ---
   function showToast(message, type = "info") {
-    const container = document.getElementById("toast-container");
-    const toast = document.createElement("div");
-    toast.className = `toast ${type === "success" ? "toast-success" : ""}`;
-    
-    const icon = type === "success" 
-      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>`
-      : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #3b82f6;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`;
-
-    toast.innerHTML = `${icon} <span>${message}</span>`;
-    container.appendChild(toast);
-
-    setTimeout(() => {
-      toast.classList.add("fade-out");
-      toast.addEventListener("transitionend", () => {
-        toast.remove();
-      });
-    }, 2800);
+    // Toast notifications are disabled as requested
   }
 
   // --- Rendering UI: Food Cards Grid ---
@@ -195,8 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
       
       return true;
     });
-
-    resultsCount.textContent = `(${filtered.length} found)`;
 
     if (filtered.length === 0) {
       foodCardsGrid.innerHTML = `
@@ -440,6 +431,11 @@ document.addEventListener("DOMContentLoaded", () => {
     plateItems.push(plateItem);
     savePlateToStorage();
     updatePlateUI();
+
+    // Auto switch to Plate tab on mobile so user can see it live
+    if (window.innerWidth <= 1024) {
+      switchToPlateTab();
+    }
 
     const descMsg = addedByCount 
       ? `${countVal} ${selectedFood.unitName}(s) (~${grams}g)` 
